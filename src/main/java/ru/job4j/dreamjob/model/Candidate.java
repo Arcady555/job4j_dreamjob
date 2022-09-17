@@ -9,9 +9,13 @@ public class Candidate {
     private String desc;
     private Date created;
 
-
-
     public Candidate() { }
+
+    public Candidate(int id, String name, String desc) {
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
+    }
 
     public Candidate(int id, String name, String desc, Date created) {
         this.id = id;
