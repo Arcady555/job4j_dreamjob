@@ -15,8 +15,8 @@ public class CandidateStore {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private CandidateStore() {
-        candidates.put(1, new Candidate(1, "Junior Java Job", "I'm super!!!"
-                , new Date(2022, Calendar.SEPTEMBER, 8)));
+        candidates.put(1, new Candidate(1, "Junior Java Job", "I'm super!!!",
+                new Date(2022, Calendar.SEPTEMBER, 8)));
     }
 
     public static CandidateStore instOf() {
