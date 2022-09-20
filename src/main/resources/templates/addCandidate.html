@@ -40,13 +40,13 @@
                 Новый кандидат.
             </div>
             <div class="card-body">
-                <form>
+                <form th:action="@{/formAddCandidate}" method="POST">
                     <div class="form-group">
                         <label>Имя
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="name">
                         </label>
                         <label>Описание
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="desc">
                         </label>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>

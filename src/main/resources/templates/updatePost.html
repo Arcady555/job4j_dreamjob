@@ -43,8 +43,6 @@
                 <form th:action="@{/updatePost}" method="POST" th:object="${post}">
                     <input type="hidden" name="id" th:field="*{id}"/>
                     <div class="form-group">
-
-
                         <label for="name">Имя
                             <input type="text" class="form-control" name="name" id="name" th:field="*{name}">
                         </label>
