@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.service;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.store.CandidateStore;
 import ru.job4j.dreamjob.store.model.Candidate;
@@ -7,6 +8,7 @@ import ru.job4j.dreamjob.store.model.Candidate;
 import java.util.Collection;
 
 @Service
+@ThreadSafe
 public class CandidateService {
     private static final CandidateService INST = new CandidateService();
     private final CandidateStore candidateStore = CandidateStore.instOf();
