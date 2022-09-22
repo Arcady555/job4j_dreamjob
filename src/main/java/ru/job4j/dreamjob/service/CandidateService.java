@@ -1,5 +1,6 @@
-package ru.job4j.dreamjob.store;
+package ru.job4j.dreamjob.service;
 
+import ru.job4j.dreamjob.store.CandidateStore;
 import ru.job4j.dreamjob.store.model.Candidate;
 
 import java.util.Calendar;
@@ -9,14 +10,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CandidateStore {
-    private static final CandidateStore INST = new CandidateStore();
+public class CandidateService {
+    private static final CandidateStore INST = CandidateStore.instOf();
+    private final CandidateStore store = CandidateStore.instOf();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private final AtomicInteger id = new AtomicInteger(1);
 
-    private CandidateStore() {
-        candidates.put(1, new Candidate(1, "Junior Java Job", "I'm super!!!",
-                new Date(2022, Calendar.SEPTEMBER, 8)));
+    private CandidateService() {
     }
 
     public static CandidateStore instOf() {
@@ -24,7 +24,7 @@ public class CandidateStore {
     }
 
     public Collection<Candidate> findAll() {
-        return candidates.values();
+        return store.findAll();
     }
 
     public void add(Candidate candidate) {

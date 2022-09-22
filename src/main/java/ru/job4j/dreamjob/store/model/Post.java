@@ -1,26 +1,26 @@
-package ru.job4j.dreamjob.model;
+package ru.job4j.dreamjob.store.model;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class Candidate {
+public class Post {
     private int id;
     private String name;
-    private String desc;
+    private String description;
     private Date created;
 
-    public Candidate() { }
+    public Post() { }
 
-    public Candidate(int id, String name, String desc) {
+    public Post(int id, String name, String description) {
         this.id = id;
         this.name = name;
-        this.desc = desc;
+        this.description = description;
     }
 
-    public Candidate(int id, String name, String desc, Date created) {
+    public Post(int id, String name, String description, Date created) {
         this.id = id;
         this.name = name;
-        this.desc = desc;
+        this.description = description;
         this.created = created;
     }
 
@@ -40,12 +40,12 @@ public class Candidate {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String description) {
-        this.desc = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getCreated() {
@@ -64,8 +64,8 @@ public class Candidate {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Candidate candidate = (Candidate) o;
-        return id == candidate.id;
+        Post post = (Post) o;
+        return id == post.id;
     }
 
     @Override
