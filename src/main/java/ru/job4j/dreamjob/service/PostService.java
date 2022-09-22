@@ -3,42 +3,32 @@ package ru.job4j.dreamjob.service;
 import ru.job4j.dreamjob.store.PostStore;
 import ru.job4j.dreamjob.store.model.Post;
 
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class PostService {
-    private static final PostStore INST = PostStore.instOf();
-   private final PostStore store = PostStore.instOf();
-    private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
-    private final AtomicInteger id = new AtomicInteger(3);
+    private static final PostService INST = new PostService();
+    private final PostStore postStore = PostStore.instOf();
 
     private PostService() {
     }
 
-    public static PostStore instOf() {
+    public static PostService instOf() {
         return INST;
     }
 
     public Collection<Post> findAll() {
-        return store.findAll();
+        return postStore.findAll();
     }
 
     public void add(Post post) {
-        post.setId(id.incrementAndGet());
-        post.setCreated(new Date());
-        posts.put(post.getId(), post);
+        postStore.add(post);
     }
 
     public Post findById(int id) {
-        return posts.get(id);
+        return postStore.findById(id);
     }
 
     public void update(Post post) {
-        post.setCreated(new Date());
-        posts.replace(post.getId(), post);
+        postStore.update(post);
     }
 }
