@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 public class PostStore {
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
-    private final AtomicInteger id = new AtomicInteger(3); //4?
+    private final AtomicInteger id = new AtomicInteger(3);
 
     private PostStore() {
         posts.put(1, new Post(1, "Junior Java Job", "no bad job!",
