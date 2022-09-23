@@ -10,14 +10,10 @@ import java.util.Collection;
 @Service
 @ThreadSafe
 public class CandidateService {
-    private static final CandidateService INST = new CandidateService();
-    private final CandidateStore candidateStore = CandidateStore.instOf();
+    private final CandidateStore candidateStore;
 
-    private CandidateService() {
-    }
-
-    public static CandidateService instOf() {
-        return INST;
+    public CandidateService(CandidateStore candidateStore) {
+        this.candidateStore = candidateStore;
     }
 
     public Collection<Candidate> findAll() {

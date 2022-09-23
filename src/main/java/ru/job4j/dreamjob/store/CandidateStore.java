@@ -14,17 +14,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 @ThreadSafe
 public class CandidateStore {
-    private static final CandidateStore INST = new CandidateStore();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private final AtomicInteger id = new AtomicInteger(1);
 
-    private CandidateStore() {
-        candidates.put(1, new Candidate(1, "Junior Java Job", "I'm super!!!",
-                new Date(2022, Calendar.SEPTEMBER, 8)));
-    }
-
-    public static CandidateStore instOf() {
-        return INST;
+    public CandidateStore() {
     }
 
     public Collection<Candidate> findAll() {

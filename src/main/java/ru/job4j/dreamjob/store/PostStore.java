@@ -18,13 +18,7 @@ public class PostStore {
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final AtomicInteger id = new AtomicInteger(3);
 
-    private PostStore() {
-        posts.put(1, new Post(1, "Junior Java Job", "no bad job!",
-                new Date(2022, Calendar.SEPTEMBER, 10)));
-        posts.put(2, new Post(2, "Middle Java Job", "good job!",
-                new Date(2022, Calendar.SEPTEMBER, 11)));
-        posts.put(3, new Post(3, "Senior Java Job", "excellent job!",
-                new Date(2022, Calendar.SEPTEMBER, 1)));
+    public PostStore() {
     }
 
     public Collection<Post> findAll() {
