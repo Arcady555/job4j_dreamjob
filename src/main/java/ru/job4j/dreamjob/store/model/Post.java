@@ -1,11 +1,13 @@
 package ru.job4j.dreamjob.store.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Post {
+public class Post implements Serializable {
     private int id;
     private String name;
+    private boolean visible;
     private String description;
     private Date created;
 
@@ -54,6 +56,14 @@ public class Post {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     @Override
