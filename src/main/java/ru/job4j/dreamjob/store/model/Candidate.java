@@ -1,9 +1,10 @@
 package ru.job4j.dreamjob.store.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Candidate {
+public class Candidate implements Serializable {
     private int id;
     private String name;
     private boolean visible;
