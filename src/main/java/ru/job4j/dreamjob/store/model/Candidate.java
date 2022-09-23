@@ -9,6 +9,7 @@ public class Candidate implements Serializable {
     private String name;
     private boolean visible;
     private String desc;
+    private City city;
     private Date created;
 
     public Candidate() { }
@@ -64,6 +65,14 @@ public class Candidate implements Serializable {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
