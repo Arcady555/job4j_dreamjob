@@ -1,11 +1,13 @@
 package ru.job4j.dreamjob.service;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.store.model.City;
 
 import java.util.*;
 
 @Service
+@ThreadSafe
 public class CityService {
     private Map<Integer, City> cities = new HashMap<Integer, City>();
 

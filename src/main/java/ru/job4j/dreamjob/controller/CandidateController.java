@@ -30,27 +30,29 @@ public class CandidateController {
     }
 
     @GetMapping("/formAddCandidate")
-    public String addCandidate(Model model) {
+    public String addCandidateGet(Model model) {
         model.addAttribute("candidate", new Candidate(0, "Заполните поле", "Заполните поле"));
         model.addAttribute("cities", cityService.getAllCities());
         return "addCandidate";
     }
 
     @PostMapping("/formAddCandidate")
-    public String createCandidate(@ModelAttribute Candidate candidate) {
+    public String addCandidatePost(@ModelAttribute Candidate candidate) {
+        candidate.getCity().setName(cityService.findById(candidate.getCity().getId()).getName());
         candidateService.add(candidate);
         return "redirect:/candidates";
     }
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
-    public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id) {
+    public String updateCandidateGet(Model model, @PathVariable("candidateId") int id) {
         model.addAttribute("candidate", candidateService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         return "updateCandidate";
     }
 
     @PostMapping("/updateCandidate")
-    public String updateCandidate(@ModelAttribute Candidate candidate) {
+    public String updateCandidatePost(@ModelAttribute Candidate candidate) {
+        candidate.getCity().setName(cityService.findById(candidate.getCity().getId()).getName());
         candidateService.update(candidate);
         return "redirect:/candidates";
     }
