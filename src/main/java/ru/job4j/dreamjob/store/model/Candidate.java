@@ -7,6 +7,7 @@ import java.util.Objects;
 public class Candidate implements Serializable {
     private int id;
     private String name;
+    private byte[] photo;
     private boolean visible;
     private String desc;
     private City city;
@@ -41,6 +42,14 @@ public class Candidate implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     public String getDesc() {
