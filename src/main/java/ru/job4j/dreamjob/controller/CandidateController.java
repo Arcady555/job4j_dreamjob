@@ -38,7 +38,7 @@ public class CandidateController {
 
     @PostMapping("/formAddCandidate")
     public String addCandidatePost(@ModelAttribute Candidate candidate) {
-        candidate.getCity().setName(cityService.findById(candidate.getCity().getId()).getName());
+        candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.add(candidate);
         return "redirect:/candidates";
     }
@@ -52,7 +52,7 @@ public class CandidateController {
 
     @PostMapping("/updateCandidate")
     public String updateCandidatePost(@ModelAttribute Candidate candidate) {
-        candidate.getCity().setName(cityService.findById(candidate.getCity().getId()).getName());
+        candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.update(candidate);
         return "redirect:/candidates";
     }

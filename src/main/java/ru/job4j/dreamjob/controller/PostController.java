@@ -39,7 +39,7 @@ public class PostController {
 
     @PostMapping("/formAddPost")
     public String addPostPost(@ModelAttribute Post post) {
-        post.getCity().setName(cityService.findById(post.getCity().getId()).getName());
+        post.setCity(cityService.findById(post.getCity().getId()));
         postService.add(post);
         return "redirect:/posts";
     }
@@ -53,7 +53,7 @@ public class PostController {
 
     @PostMapping("/updatePost")
     public String updatePostPost(@ModelAttribute Post post) {
-        post.getCity().setName(cityService.findById(post.getCity().getId()).getName());
+        post.setCity(cityService.findById(post.getCity().getId()));
         postService.update(post);
         return "redirect:/posts";
     }
