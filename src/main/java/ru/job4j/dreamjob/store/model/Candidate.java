@@ -10,22 +10,22 @@ public class Candidate implements Serializable {
     private String name;
     private byte[] photo;
     private boolean visible;
-    private String desc;
+    private String description;
     private City city;
     private LocalDateTime created;
 
     public Candidate() { }
 
-    public Candidate(int id, String name, String desc) {
+    public Candidate(int id, String name, String description) {
         this.id = id;
         this.name = name;
-        this.desc = desc;
+        this.description = description;
     }
 
-    public Candidate(int id, String name, String desc, LocalDateTime created) {
+    public Candidate(int id, String name, String description, LocalDateTime created) {
         this.id = id;
         this.name = name;
-        this.desc = desc;
+        this.description = description;
         this.created = created;
     }
 
@@ -53,12 +53,12 @@ public class Candidate implements Serializable {
         this.photo = photo;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String description) {
-        this.desc = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getCreated() {
