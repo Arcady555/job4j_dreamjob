@@ -4,8 +4,8 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.store.model.Candidate;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,7 +25,7 @@ public class CandidateStore {
 
     public void add(Candidate candidate) {
         candidate.setId(id.incrementAndGet());
-        candidate.setCreated(new Date());
+        candidate.setCreated(LocalDateTime.now());
         candidates.put(candidate.getId(), candidate);
     }
 
@@ -34,7 +34,7 @@ public class CandidateStore {
     }
 
     public void update(Candidate candidate) {
-        candidate.setCreated(new Date());
+        candidate.setCreated(LocalDateTime.now());
         candidates.replace(candidate.getId(), candidate);
     }
 }
