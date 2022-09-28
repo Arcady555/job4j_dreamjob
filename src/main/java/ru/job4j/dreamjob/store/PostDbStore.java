@@ -4,10 +4,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.store.model.City;
 import ru.job4j.dreamjob.store.model.Post;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +25,7 @@ public class PostDbStore {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    Post post = new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime());
-                    post.setVisible(it.getBoolean("visible"));
-                    post.setCity(new City(it.getInt("city_id"), ""));
+                    Post post = sqlGetPost(it);
                     posts.add(post);
                 }
             }
@@ -47,11 +39,7 @@ public class PostDbStore {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("INSERT INTO post(name, visible, description,"
                      + " city_id, created) VALUES (?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, post.getName());
-            ps.setBoolean(2, post.isVisible());
-            ps.setString(3, post.getDescription());
-            ps.setInt(4, post.getCity().getId());
-            ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            sqlSetTable(ps, post);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -65,15 +53,11 @@ public class PostDbStore {
     }
 
     public void update(Post post) {
-        post.setCreated(LocalDateTime.now());
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("UPDATE post SET name = ?, description = ?,"
+             PreparedStatement ps =  cn.prepareStatement("UPDATE post SET name = ?, visible = ?, description = ?,"
                      + " city_id = ?, created = ? WHERE id = ?;", PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, post.getName());
-            ps.setString(2, post.getDescription());
-            ps.setInt(3, post.getCity().getId());
-            ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            ps.setInt(5, post.getId());
+            sqlSetTable(ps, post);
+            ps.setInt(6, post.getId());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -93,18 +77,31 @@ public class PostDbStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    post = new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime());
-                    post.setVisible(it.getBoolean("visible"));
-                    post.setCity(new City(it.getInt("city_id"), ""));
+                    post = sqlGetPost(it);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return post;
+    }
+
+    private void sqlSetTable(PreparedStatement ps, Post post) throws SQLException {
+        ps.setString(1, post.getName());
+        ps.setBoolean(2, post.isVisible());
+        ps.setString(3, post.getDescription());
+        ps.setInt(4, post.getCity().getId());
+        ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+    }
+
+    private Post sqlGetPost(ResultSet it) throws SQLException {
+        Post post = new Post(
+                it.getInt("id"),
+                it.getString("name"),
+                it.getString("description"),
+                it.getTimestamp("created").toLocalDateTime());
+        post.setVisible(it.getBoolean("visible"));
+        post.setCity(new City(it.getInt("city_id"), ""));
         return post;
     }
 }
