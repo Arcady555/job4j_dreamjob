@@ -86,18 +86,25 @@ public class PostDbStore {
     }
 
     public Post findById(int id) {
+        Post post = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post WHERE id = ?")
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Post(it.getInt("id"), it.getString("name"), it.getString("description"));
+                    post = new Post(
+                            it.getInt("id"),
+                            it.getString("name"),
+                            it.getString("description"),
+                            it.getTimestamp("created").toLocalDateTime());
+                    post.setVisible(it.getBoolean("visible"));
+                    post.setCity(new City(it.getInt("city_id"), ""));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return post;
     }
 }
