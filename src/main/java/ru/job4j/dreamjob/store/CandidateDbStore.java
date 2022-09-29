@@ -1,6 +1,9 @@
 package ru.job4j.dreamjob.store;
 
+import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.store.model.Candidate;
 import ru.job4j.dreamjob.store.model.City;
@@ -11,7 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@ThreadSafe
 public class CandidateDbStore {
+    private static final Logger LOG = LogManager.getLogger(CandidateDbStore.class.getName());
+    private static final String FIND_ALL = "SELECT * FROM candidate";
+    private static final String ADD = "INSERT INTO candidate(photo, name, visible, description,"
+            + " city_id, created) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE candidate SET photo = ?, name = ?, visible = ?,"
+            + " description = ?, city_id = ?, created = ? WHERE id = ?;";
+    private static final String FIND_BY_ID = "SELECT * FROM candidate WHERE id = ?";
+
     private final BasicDataSource pool;
 
     public CandidateDbStore(BasicDataSource pool) {
@@ -21,7 +33,7 @@ public class CandidateDbStore {
     public List<Candidate> findAll() {
         List<Candidate> candidates = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate")
+             PreparedStatement ps =  cn.prepareStatement(FIND_ALL)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -29,16 +41,15 @@ public class CandidateDbStore {
                     candidates.add(candidate);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error("SQLException", e);
         }
         return candidates;
     }
 
     public Candidate add(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("INSERT INTO candidate(photo, name, visible, description,"
-                     + " city_id, created) VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps =  cn.prepareStatement(ADD, PreparedStatement.RETURN_GENERATED_KEYS)) {
             sqlSetTable(ps, candidate);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
@@ -46,8 +57,8 @@ public class CandidateDbStore {
                     candidate.setId(id.getInt(1));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error("SQLException", e);
         }
         return candidate;
     }
@@ -55,9 +66,7 @@ public class CandidateDbStore {
     public void update(Candidate candidate) {
 
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("UPDATE candidate SET photo = ?, name = ?, visible = ?,"
-                     + " description = ?, city_id = ?, created = ? WHERE id = ?;",
-                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps =  cn.prepareStatement(UPDATE, PreparedStatement.RETURN_GENERATED_KEYS)) {
             sqlSetTable(ps, candidate);
             ps.setInt(7, candidate.getId());
             ps.execute();
@@ -66,15 +75,15 @@ public class CandidateDbStore {
                     candidate.setId(id.getInt(1));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error("SQLException", e);
         }
     }
 
     public Candidate findById(int id) {
         Candidate candidate = null;
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate WHERE id = ?")
+             PreparedStatement ps =  cn.prepareStatement(FIND_BY_ID)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
@@ -82,8 +91,8 @@ public class CandidateDbStore {
                     candidate = sqlGetCandidate(it);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error("SQLException", e);
         }
         return candidate;
     }
