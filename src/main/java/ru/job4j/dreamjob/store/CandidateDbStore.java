@@ -66,15 +66,10 @@ public class CandidateDbStore {
     public void update(Candidate candidate) {
 
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement(UPDATE, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps =  cn.prepareStatement(UPDATE)) {
             sqlSetTable(ps, candidate);
             ps.setInt(7, candidate.getId());
             ps.execute();
-            try (ResultSet id = ps.getGeneratedKeys()) {
-                if (id.next()) {
-                    candidate.setId(id.getInt(1));
-                }
-            }
         } catch (SQLException e) {
             LOG.error("SQLException", e);
         }

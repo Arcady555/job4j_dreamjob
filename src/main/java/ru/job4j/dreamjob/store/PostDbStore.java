@@ -33,7 +33,7 @@ public class PostDbStore {
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement(FIND_ALL);
+             PreparedStatement ps =  cn.prepareStatement(FIND_ALL)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -65,15 +65,10 @@ public class PostDbStore {
 
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement(UPDATE, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps =  cn.prepareStatement(UPDATE)) {
             sqlSetTable(ps, post);
             ps.setInt(6, post.getId());
             ps.execute();
-            try (ResultSet id = ps.getGeneratedKeys()) {
-                if (id.next()) {
-                    post.setId(id.getInt(1));
-                }
-            }
         } catch (SQLException e) {
             LOG.error("SQLException", e);
         }
