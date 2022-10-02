@@ -8,6 +8,9 @@ public class User implements Serializable {
     private String email;
     private String password;
 
+    public User() {
+    }
+
     public User(int id, String email, String password) {
         this.id = id;
         this.email = email;

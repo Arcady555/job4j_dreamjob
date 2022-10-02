@@ -29,10 +29,9 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String addUserPost(Model model, @ModelAttribute User user) {
+    public String addUserPost(@ModelAttribute User user) {
         Optional<User> regUser = userService.add(user);
         if (regUser.isEmpty()) {
-            model.addAttribute("message", "Пользователь с такой почтой уже существует");
             return "redirect:/fail";
         }
         return "redirect:/success";
@@ -43,9 +42,8 @@ public class UserController {
         return "printSuccess";
     }
 
-    @PostMapping("/fail")
+    @GetMapping("/fail")
     public String fail(@ModelAttribute String massage) {
-        System.out.println(massage);
         return "printFail";
     }
 }
