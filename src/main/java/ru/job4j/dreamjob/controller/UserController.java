@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.dreamjob.service.UserService;
 import ru.job4j.dreamjob.store.model.User;
 
@@ -45,5 +46,22 @@ public class UserController {
     @GetMapping("/fail")
     public String fail(@ModelAttribute String massage) {
         return "printFail";
+    }
+
+    @GetMapping("/loginPage")
+    public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail) {
+        model.addAttribute("fail", fail != null);
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginPost(@ModelAttribute User user) {
+        Optional<User> userDb = userService.findUserByEmailAndPwd(
+                user.getEmail(), user.getPassword()
+        );
+        if (userDb.isEmpty()) {
+            return "redirect:/loginPage?fail=true";
+        }
+        return "redirect:/index";
     }
 }

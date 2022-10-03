@@ -14,13 +14,11 @@
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>Работа мечты!</title>
 </head>
 <body>
-<div class="container">
+<div class="container pt-3">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Работа мечты</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,10 +36,26 @@
             </div>
         </div>
     </nav>
-    <div class="row pt-3">
+    <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Регистрация не удалась! Пользователь с такой почтой уже существует!
+                Авторизация
+            </div>
+            <div class="card-body">
+                <div th:if="${fail}" class="alert alert-danger" role="alert">
+                    Логин или пароль введены не верно!
+                </div>
+                <form th:action="@{/login}" method="POST">
+                    <div class="form-group">
+                        <label>Почта</label>
+                        <input type="text" class="form-control" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="text" class="form-control" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
             </div>
         </div>
     </div>

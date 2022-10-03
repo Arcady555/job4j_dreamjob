@@ -15,6 +15,7 @@ import java.util.Optional;
 public class UserDbStore {
     private static final Logger LOG = LogManager.getLogger(UserDbStore.class.getName());
     private static final String ADD = "INSERT INTO users (email, password) VALUES (?, ?);";
+    private static final String FIND = "SELECT * FROM users WHERE email = ? and password = ?;";
 
     private final BasicDataSource pool;
 
@@ -35,6 +36,28 @@ public class UserDbStore {
                 }
             }
             rsl = Optional.of(user);
+        } catch (SQLException e) {
+            LOG.error("SQLException", e);
+        }
+        return rsl;
+    }
+
+    public Optional<User> findUserByEmailAndPwd(String email, String password) {
+        Optional<User> rsl = Optional.empty();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement(FIND)
+        ) {
+            ps.setString(1, email);
+            ps.setString(2, password);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    User user = new User(
+                            it.getInt("id"),
+                            it.getString("email"),
+                            it.getString("password"));
+                    rsl = Optional.of(user);
+                }
+            }
         } catch (SQLException e) {
             LOG.error("SQLException", e);
         }
