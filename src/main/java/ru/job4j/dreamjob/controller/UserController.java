@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.dreamjob.service.UserService;
 import ru.job4j.dreamjob.store.model.User;
-import ru.job4j.dreamjob.utility.TakeUserUtility;
+import ru.job4j.dreamjob.utility.Utility;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("/registration")
     public String addUserGet(Model model, HttpSession session) {
-        TakeUserUtility.getInstance(model, session);
+        Utility.userGet(model, session);
         model.addAttribute("user1", new User(0, "Заполните поле", "Заполните поле"));
         return "addUser";
     }
@@ -44,20 +44,20 @@ public class UserController {
 
     @GetMapping("/success")
     public String success(Model model, HttpSession session) {
-        TakeUserUtility.getInstance(model, session);
+        Utility.userGet(model, session);
         return "printSuccess";
     }
 
     @GetMapping("/fail")
     public String fail(Model model, HttpSession session) {
-        TakeUserUtility.getInstance(model, session);
+        Utility.userGet(model, session);
         return "printFail";
     }
 
     @GetMapping("/loginPage")
     public String loginGet(Model model, @RequestParam(name = "fail",
             required = false) Boolean fail, HttpSession session) {
-        TakeUserUtility.getInstance(model, session);
+        Utility.userGet(model, session);
         model.addAttribute("fail", fail != null);
         return "login";
     }
