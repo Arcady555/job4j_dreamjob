@@ -5,9 +5,9 @@ import ru.job4j.dreamjob.store.model.User;
 
 import javax.servlet.http.HttpSession;
 
-public class Utility {
+public final class TakeUserUtility {
 
-    public static void userGet(Model model, HttpSession session) {
+    private TakeUserUtility(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
@@ -16,5 +16,9 @@ public class Utility {
             user.setName(user.getEmail());
         }
         model.addAttribute("user", user);
+    }
+
+    public static TakeUserUtility getInstance(Model model, HttpSession session) {
+        return new TakeUserUtility(model, session);
     }
 }

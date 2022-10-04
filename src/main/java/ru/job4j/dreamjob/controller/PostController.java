@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
 import ru.job4j.dreamjob.store.model.Post;
-import ru.job4j.dreamjob.utility.Utility;
+import ru.job4j.dreamjob.utility.TakeUserUtility;
 
 import javax.servlet.http.HttpSession;
 
@@ -29,14 +29,14 @@ public class PostController {
 
     @GetMapping("/posts")
     public String posts(Model model, HttpSession session) {
-        Utility.userGet(model, session);
+        TakeUserUtility.getInstance(model, session);
         model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 
     @GetMapping("/formAddPost")
     public String addPostGet(Model model, HttpSession session) {
-        Utility.userGet(model, session);
+        TakeUserUtility.getInstance(model, session);
         model.addAttribute("post", new Post(0, "Заполните поле", "Заполните поле"));
         model.addAttribute("cities", cityService.getAllCities());
         return "addPost";
@@ -51,7 +51,7 @@ public class PostController {
 
     @GetMapping("/formUpdatePost/{postId}")
     public String updatePostGet(Model model, @PathVariable("postId") int id, HttpSession session) {
-        Utility.userGet(model, session);
+        TakeUserUtility.getInstance(model, session);
         model.addAttribute("post", postService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         return "updatePost";
