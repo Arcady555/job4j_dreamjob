@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.dreamjob.service.UserService;
 import ru.job4j.dreamjob.store.model.User;
+import ru.job4j.dreamjob.utilit.Utilit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,7 +28,7 @@ public class UserController {
 
     @GetMapping("/registration")
     public String addUserGet(Model model, HttpSession session) {
-        userGet(model, session);
+        Utilit.userGet(model, session);
         model.addAttribute("user1", new User(0, "Заполните поле", "Заполните поле"));
         return "addUser";
     }
@@ -43,20 +44,20 @@ public class UserController {
 
     @GetMapping("/success")
     public String success(Model model, HttpSession session) {
-        userGet(model, session);
+        Utilit.userGet(model, session);
         return "printSuccess";
     }
 
     @GetMapping("/fail")
     public String fail(Model model, HttpSession session) {
-        userGet(model, session);
+        Utilit.userGet(model, session);
         return "printFail";
     }
 
     @GetMapping("/loginPage")
     public String loginGet(Model model, @RequestParam(name = "fail",
             required = false) Boolean fail, HttpSession session) {
-        userGet(model, session);
+        Utilit.userGet(model, session);
         model.addAttribute("fail", fail != null);
         return "login";
     }
@@ -72,16 +73,5 @@ public class UserController {
         HttpSession session = req.getSession();
         session.setAttribute("user", userDb.get());
         return "redirect:/index";
-    }
-
-    private void userGet(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        } else {
-            user.setName(user.getEmail());
-        }
-        model.addAttribute("user", user);
     }
 }
